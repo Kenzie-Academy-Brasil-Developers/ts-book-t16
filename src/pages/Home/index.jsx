@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { api } from "../../services/api";
+import { Card } from "../../components/Card";
 
 export const Home = () => {
   const [books, setBooks] = useState([]);
@@ -15,17 +16,16 @@ export const Home = () => {
     getBooks();
   }, []);
 
-
   return (
     <main>
       <section>
         <h1>Teste</h1>
 
+        <Outlet />
+
         <ul>
           {books.map((book) => (
-            <li key={book.id}>
-              <Link to={`/info/${book.id}`}>{book.name}</Link>
-            </li>
+            <Card key={book.id} book={book} />
           ))}
         </ul>
       </section>
