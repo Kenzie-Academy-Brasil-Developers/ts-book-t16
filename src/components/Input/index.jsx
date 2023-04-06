@@ -1,12 +1,12 @@
 import { forwardRef } from "react";
+import { Container } from "./styles";
 
-export const Input = forwardRef(({ id, label, children, ...rest }, ref) => {
+export const Input = forwardRef(({ id, label, error, ...rest }, ref) => {
   return (
-    <div>
+    <Container>
       {label ? <label htmlFor={id}>{label}</label> : null}
       <input id={id} ref={ref} {...rest} />
-      {children}
-    </div>
+      {error ? <p>{error}</p> : null}
+    </Container>
   );
 });
-
