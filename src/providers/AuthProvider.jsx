@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 import { api } from "../services/api";
@@ -9,7 +9,9 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -22,11 +24,9 @@ export const AuthProvider = ({ children }) => {
 
         const { sub } = jwtDecode(token);
 
-        const response = await api.get(`users/${sub}`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        api.defaults.headers.common.authorization = `Bearer ${token}`;
+
+        const response = await api.get(`users/${sub}`);
 
         setUser(response.data);
       } catch (error) {
@@ -44,11 +44,14 @@ export const AuthProvider = ({ children }) => {
 
     const { user: userResponse, accessToken } = response.data;
 
+    api.defaults.headers.common.authorization = `Bearer ${accessToken}`;
+
     localStorage.setItem("@ts-book:token", accessToken);
 
-    setUser(userResponse);
+    const toNavigate = location.state?.pathname || '/home';
 
-    navigate("/home");
+    setUser(userResponse);
+    navigate(toNavigate);
   };
 
   return (

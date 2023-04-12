@@ -4,7 +4,6 @@ import { api } from "../../services/api";
 
 export const Info = () => {
   const { id } = useParams();
-
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
