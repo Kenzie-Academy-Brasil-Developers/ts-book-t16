@@ -17,6 +17,7 @@ export const RoutesMain = () => {
           <Route path=":id" element={<Preview />} />
         </Route>
         <Route path="/register" element={<Register />} />
+
         <Route path="/info/:id" element={<Info />} />
       </Route>
 

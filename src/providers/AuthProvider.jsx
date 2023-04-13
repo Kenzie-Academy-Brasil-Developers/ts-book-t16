@@ -3,13 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 import { api } from "../services/api";
+import { BookProvider } from "./BookProvider";
 
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -40,18 +41,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signIn = async (data) => {
-    const response = await api.post("/login", data);
+    try {
+      const response = await api.post("/login", data);
 
-    const { user: userResponse, accessToken } = response.data;
+      const { user: userResponse, accessToken } = response.data;
 
-    api.defaults.headers.common.authorization = `Bearer ${accessToken}`;
+      api.defaults.headers.common.authorization = `Bearer ${accessToken}`;
 
-    localStorage.setItem("@ts-book:token", accessToken);
+      localStorage.setItem("@ts-book:token", accessToken);
 
-    const toNavigate = location.state?.pathname || '/home';
+      const toNavigate = location.state?.pathname || "/home";
 
-    setUser(userResponse);
-    navigate(toNavigate);
+      setUser(userResponse);
+      navigate(toNavigate);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

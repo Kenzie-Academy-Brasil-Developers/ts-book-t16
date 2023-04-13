@@ -5,6 +5,9 @@ import { Input } from "../../components/Input";
 import { schema } from "./validator";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import { Main } from "./styles";
+import { Button } from "../../styles/Button";
+import { Loading } from "../../styles/Loading";
 
 export const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -12,13 +15,15 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
   });
 
+  console.log(isSubmitting);
+
   return (
-    <main>
+    <Main>
       <section>
         <h1>Login</h1>
 
@@ -41,9 +46,12 @@ export const Login = () => {
             {...register("password")}
           />
 
-          <button type="submit">Entrar</button>
+          <Button type="submit" disabled={isSubmitting}>
+          <Loading /> 
+            {isSubmitting ? <Loading /> : "Entrar"}
+          </Button>
         </form>
       </section>
-    </main>
+    </Main>
   );
 };

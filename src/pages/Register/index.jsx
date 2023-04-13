@@ -1,12 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { api } from "../../services/api";
 import { Input } from "../../components/Input";
 import { schema } from "./validator";
+import { BookContext } from "../../providers/BookProvider";
 
 export const Register = () => {
+  const {handleRegister} = useContext(BookContext);
   const {
     register,
     handleSubmit,
@@ -14,19 +15,6 @@ export const Register = () => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-
-  const navigate = useNavigate();
-
-  const handleRegister = async (data) => {
-    try {
-      console.log(data);
-      await api.post("/books", data);
-
-      navigate("/home");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <main>

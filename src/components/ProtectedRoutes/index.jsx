@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProvider";
+import { BookProvider } from "../../providers/BookProvider";
 
 export const ProtectedRoutes = () => {
   const { user, loading } = useContext(AuthContext);
@@ -14,5 +15,9 @@ export const ProtectedRoutes = () => {
     return <Navigate to="/" state={location} />; // envia para o login
   }
 
-  return <Outlet />;
+  return (
+    <BookProvider>
+      <Outlet />
+    </BookProvider>
+  );
 };
