@@ -47,7 +47,6 @@ export const Login = () => {
           />
 
           <Button type="submit" disabled={isSubmitting}>
-          <Loading /> 
             {isSubmitting ? <Loading /> : "Entrar"}
           </Button>
         </form>
